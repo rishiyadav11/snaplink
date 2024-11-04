@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.redirectToOriginalUrl = exports.createShortUrl = void 0;
+exports.createShortUrl = void 0;
 const urlModel_1 = __importDefault(require("../models/urlModel"));
 const shortid_1 = __importDefault(require("shortid"));
 const createShortUrl = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -21,26 +21,28 @@ const createShortUrl = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const shortId = shortid_1.default.generate();
         const newUrl = new urlModel_1.default({ originalUrl, shortId });
         yield newUrl.save();
-        res.status(201).json({ shortUrl: `${req.protocol}://${req.get('host')}/api/${shortId}` });
+        res.status(201).json({ shortUrl: `${`https://snaplink-iskj.onrender.com/api/${shortId}`});
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+export const redirectToOriginalUrl = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { shortId } = req.params;
+    const url = await Url.findOne({ shortId });
+
+    if (url) {
+      res.redirect(url.originalUrl);
+    } else {
+      res.status(404).json({ error: 'URL not found' });
     }
-    catch (error) {
-        res.status(500).json({ error: 'Server error' });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+         });
     }
+    finally { }
 });
 exports.createShortUrl = createShortUrl;
-const redirectToOriginalUrl = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { shortId } = req.params;
-        const url = yield urlModel_1.default.findOne({ shortId });
-        if (url) {
-            res.redirect(url.originalUrl);
-        }
-        else {
-            res.status(404).json({ error: 'URL not found' });
-        }
-    }
-    catch (error) {
-        res.status(500).json({ error: 'Server error' });
-    }
-});
-exports.redirectToOriginalUrl = redirectToOriginalUrl;
