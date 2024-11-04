@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-// Define the expected response type
-interface ShortenResponse {
-  shortenedUrl: string; // Adjust based on your API response structure
-}
 
 const Shorter: React.FC = () => {
   const [longUrl, setLongUrl] = useState<string>('');
