@@ -14,7 +14,7 @@ const Shorter: React.FC = () => {
     console.log(longUrl);
     
     try {
-      const response = await axios.post<ShortenResponse>('http://localhost:3000/api/shorten', {
+      const response = await axios.post<ShortenResponse>('https://snaplink-iskj.onrender.com/api/shorten', {
         originalUrl: longUrl,
       });      
       console.log(response.data.shortUrl);
