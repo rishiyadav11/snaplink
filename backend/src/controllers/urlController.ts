@@ -10,7 +10,7 @@ export const createShortUrl = async (req: Request, res: Response): Promise<void>
     const newUrl = new Url({ originalUrl, shortId });
     await newUrl.save();
 
-    res.status(201).json({ shortUrl: `${`https://snaplink-iskj.onrender.com/api/${shortId}` });
+    res.status(201).json({ shortUrl: `https://snaplink-iskj.onrender.com/api/${shortId}` });
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
